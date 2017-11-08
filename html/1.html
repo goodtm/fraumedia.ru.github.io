@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<?php
+// This results in an error.
+// The output above is before the header() call
+header('Location: http://www.fraumedia.ru/');
+?>
+
+<style>
+#mydiv {
+    position: absolute;
+    z-index: 9;
+    background-color: #f1f1f1;
+    text-align: center;
+    border: 1px solid #d3d3d3;
+}
+
+#mydivheader {
+    padding: 10px;
+    cursor: move;
+    z-index: 10;
+    background-color: #2196F3;
+    color: #fff;
+}
+</style>
+<body>
+
+<h1>Перетаскиваемый элемент DIV</h1>
+
+<p>Нажмите и удерживайте кнопку мыши, перемещая элемент DIV element</p>
+
+<div id="mydiv">
+  <div id="mydivheader">Click here to move</div>
+  <p>ЕХУУУУУ</p>
+  <p>Куда курс???</p>
+  <p>DIV!!</p>
+</div>
+
+<script>
+//Создание элемента DIV draggagle:
+dragElement(document.getElementById(("mydiv")));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* если присутствует, заголовок - это место где вы перемещаете Див из:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* В противном случае переместите Див из любового места внутри Див:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    // Получить позицию курсора мыши при запуске
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // Вызывать функцию всякий раз, когда курсор перемещается:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    // Вычисляем новую позицию курсора:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // Установите новую позицию элемента:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* Остановите движение при отпускании кнопки мыши:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
+
+</body>
+</html>
